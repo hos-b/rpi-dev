@@ -5,7 +5,9 @@
 FROM ubuntu:20.04
 
 # create user
-RUN useradd -rm -d /home/embed -s /bin/bash -g root -G sudo -u 1001 embed
+RUN apt-get update
+RUN apt-get install -y openssl sudo apt-utils
+RUN useradd -rm -d /home/embed -s /bin/bash -g root -G sudo -u 1001 -p $(openssl passwd -1 embed) embed
 RUN mkdir -p /home/embed/software
 RUN mkdir -p /home/embed/data
 
@@ -17,8 +19,6 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
 # add arm64 architecture
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends apt-utils
 RUN dpkg --add-architecture arm64
 
 ## arch-qualify the current repositories
@@ -42,9 +42,9 @@ RUN echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports focal-security m
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get install -y --no-install-recommends libavcodec-dev:arm64 libavformat-dev:arm64
-RUN apt-get install -y --no-install-recommends python3-dev
-RUN apt-get install -y --no-install-recommends python3-numpy
-RUN apt-get install -y --no-install-recommends libpython3-dev:arm64
+RUN apt-get install -y python3-dev
+RUN apt-get install -y python3-numpy
+RUN apt-get install -y libpython3-dev:arm64
 RUN apt-get install -y --no-install-recommends libgtk-3-dev:arm64 libcanberra-gtk3-dev:arm64
 RUN apt-get install -y --no-install-recommends libtiff-dev:arm64 zlib1g-dev:arm64
 RUN apt-get install -y --no-install-recommends libjpeg-dev:arm64 libpng-dev:arm64
@@ -52,9 +52,24 @@ RUN apt-get install -y --no-install-recommends crossbuild-essential-arm64
 RUN apt-get install -y --no-install-recommends libswscale-dev:arm64 libv4l-dev:arm64
 RUN apt-get update
 
-# typical software
-RUN apt-get install -y --no-install-recommends cmake git pkg-config wget
+# typical dev software
+RUN apt-get install -y --no-install-recommends cmake git pkg-config wget vim build-essential
 
-# change to user
+# miniconda + rpi env
 USER embed
 WORKDIR /home/embed
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-check-certificate
+RUN bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda3
+RUN rm Miniconda3-latest-Linux-x86_64.sh
+RUN eval "$($HOME/miniconda3/bin/conda shell.bash hook)"
+RUN $HOME/miniconda3/bin/conda init bash
+RUN $HOME/miniconda3/bin/conda config --set auto_activate_base false
+RUN $HOME/miniconda3/bin/pip install RPi.GPIO
+RUN $HOME/miniconda3/bin/pip install gpiozero
+RUN $HOME/miniconda3/bin/conda create --prefix $HOME/miniconda3/envs/rpi -y
+RUN echo "# conda shorcuts" >> $HOME/.bashrc
+RUN echo "alias ca=\"conda activate\"" >> $HOME/.bashrc
+RUN echo "alias ce=\"conda deactivate\"" >> $HOME/.bashrc
+
+# over
+RUN echo "done!"
