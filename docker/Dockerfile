@@ -8,8 +8,6 @@ FROM ubuntu:20.04
 RUN apt-get update
 RUN apt-get install -y openssl sudo apt-utils
 RUN useradd -rm -d /home/embed -s /bin/bash -g root -G sudo -u 1001 -p $(openssl passwd -1 embed) embed
-RUN mkdir -p /home/embed/software
-RUN mkdir -p /home/embed/data
 
 # symlink python3 to python
 RUN ln -s /usr/bin/python3 /usr/bin/python
@@ -52,12 +50,15 @@ RUN apt-get install -y --no-install-recommends crossbuild-essential-arm64
 RUN apt-get install -y --no-install-recommends libswscale-dev:arm64 libv4l-dev:arm64
 RUN apt-get update
 
-# typical dev software
-RUN apt-get install -y --no-install-recommends cmake git pkg-config wget vim build-essential
+# typical software
+RUN apt-get install -y --no-install-recommends cmake git vim build-essential less
+RUN apt-get install -y --no-install-recommends pkg-config wget unzip tar openssh-client
 
 # miniconda + rpi env
-USER embed
 WORKDIR /home/embed
+RUN mkdir software && chmod 777 software && chwon embed:root software
+RUN mkdir data && chmod 777 data && chdown embed:root data
+USER embed
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-check-certificate
 RUN bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda3
 RUN rm Miniconda3-latest-Linux-x86_64.sh
