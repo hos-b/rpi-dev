@@ -56,8 +56,8 @@ RUN apt-get install -y --no-install-recommends pkg-config wget unzip tar openssh
 
 # miniconda + rpi env
 WORKDIR /home/embed
-RUN mkdir software && chmod 777 software && chwon embed:root software
-RUN mkdir data && chmod 777 data && chdown embed:root data
+RUN mkdir software && chmod 775 software && chwon embed:root software
+RUN mkdir data && chmod 775 data && chdown embed:root data
 USER embed
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --no-check-certificate
 RUN bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda3

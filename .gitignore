@@ -1,3 +1,5 @@
 docker/amd64_sources.list
 docker/arm64_sources.list
 software/opencv-arm64
+rootfs
+**/build/

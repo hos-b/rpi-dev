@@ -11,10 +11,7 @@ aarch64-linux-gnu-gcc-9
 ```
 
 ## cmake
-if not using multiarch, `CMAKE_FIND_ROOT_PATH` variable needs to be set to where there's an exact copy of the root filesystem of the target device.
-```bash
-cmake -DCMAKE_AR=aarch64-linux-gnu-ar -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc-9 -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++-9 ..
-```
+if not using multiarch, `CMAKE_SYSROOT` variable needs to be set to where there's an exact copy of the root filesystem of the target device. cmake `find_*` commands will look in the sysroot, and the `CMAKE_FIND_ROOT_PATH` entries by default in all cases, as well as looking in the host system root prefix. `software/opencv-test/toolchain-aarch64.cmake` should cover both.
 
 ## opencv
 ```bash
