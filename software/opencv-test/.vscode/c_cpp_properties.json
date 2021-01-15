@@ -1,0 +1,9 @@
+{
+    "configurations": [
+        {
+			"name": "Linux",
+			"defines": []
+        }
+    ],
+    "version": 4
+}

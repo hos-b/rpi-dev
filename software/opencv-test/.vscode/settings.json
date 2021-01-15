@@ -1,0 +1,22 @@
+{
+	"python.autoComplete.extraPaths": [],
+	"ccls.launch.command": "/usr/local/bin/ccls",
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/.ccls-cache/*/**": true
+	},
+	"ccls.highlight.function.face": ["enabled"],
+	"ccls.highlight.type.face": ["enabled"],
+	"ccls.highlight.variable.face": ["enabled"],
+	"ccls.codeLens.localVariables": false,
+	"ccls.codeLens.renderInline": false,
+	"ccls.cache.directory": "/media/ramdisk/freicar_data_collector/.ccls-cache",
+	"C_Cpp.autocomplete": "Disabled",
+	"C_Cpp.formatting": "Disabled",
+	"C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.intelliSenseEngine": "Disabled",
+	"clangd.checkUpdates": true,
+	"clangd.path": "/home/embed/.vscode-server/clangd_11.0.0/bin/clangd",
+	"clangd.arguments": ["--query-driver=/usr/bin/aarch64-linux-gnu-g++-9"]
+}
