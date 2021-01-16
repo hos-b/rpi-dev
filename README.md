@@ -20,8 +20,16 @@ cmake -DCMAKE_BUILD_TYPE=RELEASE \
 	-DBUILD_TESTS=OFF \
 	-DBUILD_DOCS=OFF \
 	-DPYTHON3_INCLUDE_PATH=/usr/include/python3.8 \
-	-DPYTHON3_LIBRARIES=/usr/lib/aarch64-linux-gnu/libpython3.8.so 
+	-DPYTHON3_LIBRARIES=/usr/lib/aarch64-linux-gnu/libpython3.8.so \
 	-DPYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3/dist-packages/numpy/core/include \
 	-DBUILD_OPENCV_PYTHON3=ON \
+	-DBUILD_OPENCV_PYTHON2=OFF \
+	-DENABLE_NEON=ON \
 	-DBUILD_EXAMPLES=OFF ..
+```
+
+cannot enable VFPV3:
+```
+Required baseline optimization is not supported: VFPV3
+(CPU_BASELINE_REQUIRE=;VFPV3;NEON)
 ```
